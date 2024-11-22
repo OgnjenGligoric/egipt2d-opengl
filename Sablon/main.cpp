@@ -11,8 +11,10 @@
 #include <GL/glew.h>   //Omogucava upotrebu OpenGL naredbi
 #include <GLFW/glfw3.h>//Olaksava pravljenje i otvaranje prozora (konteksta) sa OpenGL sadrzajem
 
-unsigned int compileShader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
-unsigned int createShader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
+unsigned int compile_shader(GLenum type, const char* source); //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
+unsigned int create_shader(const char* vsSource, const char* fsSource); //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource i Fragment sejdera na putanji fsSource
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main(void)
 {
@@ -56,9 +58,9 @@ int main(void)
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++ PROMJENLJIVE I BAFERI +++++++++++++++++++++++++++++++++++++++++++++++++
 
-    unsigned int basicShader = createShader("basic.vert", "basic.frag"); // Napravi objedinjeni sejder program
+    const unsigned int basic_shader = create_shader("basic.vert", "basic.frag"); // Napravi objedinjeni sejder program
 
-    float vertices[] = //Tjemena trougla koja sadrze sve informacije o njemu. Mi definisemo podatke u onom formatu koju mi zelimo
+    constexpr float vertices[] = //Tjemena trougla koja sadrze sve informacije o njemu. Mi definisemo podatke u onom formatu koju mi zelimo
     {
         //Podaci su poredani za nasu citkivost - racunar ne vidi ni razmake ni redove.
         //Moramo mu naknadno reci kako da intepretira ove podatke
@@ -99,7 +101,7 @@ int main(void)
     
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++ RENDER LOOP - PETLJA ZA CRTANJE +++++++++++++++++++++++++++++++++++++++++++++++++
-
+    glfwSetKeyCallback(window, key_callback);
     glClearColor(0.15, 0.15, 0.15, 1.0); //Podesavanje boje pozadine (RGBA format);
 
     while (!glfwWindowShouldClose(window)) //Beskonacna petlja iz koje izlazimo tek kada prozor treba da se zatvori
@@ -114,7 +116,7 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // [KOD ZA CRTANJE]
-        glUseProgram(basicShader); //Izaberi nas sejder program za crtanje i koristi ga za svo naknadno crtanje (Ukoliko ne aktiviramo neke druge sejder programe)
+        glUseProgram(basic_shader); //Izaberi nas sejder program za crtanje i koristi ga za svo naknadno crtanje (Ukoliko ne aktiviramo neke druge sejder programe)
         glBindVertexArray(VAO); //Izaberemo sta zelimo da crtamo
         glDrawArrays(GL_TRIANGLES, 0, 3); //To i nacrtamo
         //glDrawArrays(tip primitive, indeks pocetnog tjemena, koliko narednih tjemena crtamo);
@@ -134,17 +136,17 @@ int main(void)
     //Brisanje bafera i sejdera
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
-    glDeleteProgram(basicShader);
+    glDeleteProgram(basic_shader);
     //Sve OK - batali program
     glfwTerminate();
     return 0;
 }
 
-unsigned int compileShader(GLenum type, const char* source)
+unsigned int compile_shader(GLenum type, const char* source)
 {
     //Uzima kod u fajlu na putanji "source", kompajlira ga i vraca sejder tipa "type"
     //Citanje izvornog koda iz fajla
-    std::string content = "";
+    std::string content;
     std::ifstream file(source);
     std::stringstream ss;
     if (file.is_open())
@@ -163,58 +165,62 @@ unsigned int compileShader(GLenum type, const char* source)
     int shader = glCreateShader(type); //Napravimo prazan sejder odredjenog tipa (vertex ili fragment)
     
     int success; //Da li je kompajliranje bilo uspjesno (1 - da)
-    char infoLog[512]; //Poruka o gresci (Objasnjava sta je puklo unutar sejdera)
     glShaderSource(shader, 1, &sourceCode, NULL); //Postavi izvorni kod sejdera
     glCompileShader(shader); //Kompajliraj sejder
 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success); //Provjeri da li je sejder uspjesno kompajliran
     if (success == GL_FALSE)
     {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog); //Pribavi poruku o gresci
+	    char info_log[512];
+	    glGetShaderInfoLog(shader, 512, NULL, info_log); //Pribavi poruku o gresci
         if (type == GL_VERTEX_SHADER)
             printf("VERTEX");
         else if (type == GL_FRAGMENT_SHADER)
             printf("FRAGMENT");
         printf(" sejder ima gresku! Greska: \n");
-        printf(infoLog);
+        printf(info_log);
     }
     return shader;
 }
-unsigned int createShader(const char* vsSource, const char* fsSource)
+unsigned int create_shader(const char* vsSource, const char* fsSource)
 {
     //Pravi objedinjeni sejder program koji se sastoji od Vertex sejdera ciji je kod na putanji vsSource
 
-    unsigned int program; //Objedinjeni sejder
-    unsigned int vertexShader; //Verteks sejder (za prostorne podatke)
-    unsigned int fragmentShader; //Fragment sejder (za boje, teksture itd)
+    const unsigned int program = glCreateProgram(); //Napravi prazan objedinjeni sejder program
 
-    program = glCreateProgram(); //Napravi prazan objedinjeni sejder program
-
-    vertexShader = compileShader(GL_VERTEX_SHADER, vsSource); //Napravi i kompajliraj vertex sejder
-    fragmentShader = compileShader(GL_FRAGMENT_SHADER, fsSource); //Napravi i kompajliraj fragment sejder
+    const unsigned int vertex_shader = compile_shader(GL_VERTEX_SHADER, vsSource); //Napravi i kompajliraj vertex sejder
+    const unsigned int fragment_shader = compile_shader(GL_FRAGMENT_SHADER, fsSource); //Napravi i kompajliraj fragment sejder
 
     //Zakaci verteks i fragment sejdere za objedinjeni program
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
+    glAttachShader(program, vertex_shader);
+    glAttachShader(program, fragment_shader);
 
     glLinkProgram(program); //Povezi ih u jedan objedinjeni sejder program
     glValidateProgram(program); //Izvrsi provjeru novopecenog programa
 
     int success;
-    char infoLog[512];
     glGetProgramiv(program, GL_VALIDATE_STATUS, &success); //Slicno kao za sejdere
     if (success == GL_FALSE)
     {
-        glGetShaderInfoLog(program, 512, NULL, infoLog);
+	    char info_log[512];
+	    glGetShaderInfoLog(program, 512, NULL, info_log);
         std::cout << "Objedinjeni sejder ima gresku! Greska: \n";
-        std::cout << infoLog << std::endl;
+        std::cout << info_log << std::endl;
     }
 
     //Posto su kodovi sejdera u objedinjenom sejderu, oni pojedinacni programi nam ne trebaju, pa ih brisemo zarad ustede na memoriji
-    glDetachShader(program, vertexShader);
-    glDeleteShader(vertexShader);
-    glDetachShader(program, fragmentShader);
-    glDeleteShader(fragmentShader);
+    glDetachShader(program, vertex_shader);
+    glDeleteShader(vertex_shader);
+    glDetachShader(program, fragment_shader);
+    glDeleteShader(fragment_shader);
 
     return program;
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
 }
