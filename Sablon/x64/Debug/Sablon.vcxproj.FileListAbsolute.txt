@@ -1,0 +1,4 @@
+C:\Users\NTP-325-XXXXX\Desktop\Sablon\x64\Debug\glew32.dll
+C:\Users\NTP-325-XXXXX\Desktop\Sablon\x64\Debug\Sablon.exe
+D:\Fakultet\4_GODINA\grafika\projekat\Sablon\x64\Debug\glew32.dll
+D:\Fakultet\4_GODINA\grafika\projekat\Sablon\x64\Debug\Sablon.exe
