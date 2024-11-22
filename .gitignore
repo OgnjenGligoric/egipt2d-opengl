@@ -208,8 +208,7 @@ Temporary Items
 # =========================
 
 # Windows image file caches
-Thumbs.db
-ehthumbs.db
+*.db
 
 # Folder config file
 Desktop.ini
@@ -222,3 +221,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+*.vsidx
+*.vsidx
+*.db
+*.opendb

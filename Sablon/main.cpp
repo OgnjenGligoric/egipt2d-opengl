@@ -34,15 +34,9 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //Stvaranje prozora
-    GLFWwindow* window; //Mjesto u memoriji za prozor
-    unsigned int wWidth = 500;
-    unsigned int wHeight = 500;
-    const char wTitle[] = "[Generic Title]";
-    GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
-    float xscale, yscale;
-    glfwGetMonitorContentScale(primaryMonitor, &xscale, &yscale);
-    window = glfwCreateWindow(640, 480, "My Title", glfwGetPrimaryMonitor(), NULL);
-	// window = glfwCreateWindow(wWidth, wHeight, wTitle, NULL, NULL); // Napravi novi prozor
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Egipt 2D", monitor, NULL); // Napravi novi prozor
     // glfwCreateWindow( sirina, visina, naslov, monitor na koji ovaj prozor ide preko citavog ekrana (u tom slucaju umjesto NULL ide glfwGetPrimaryMonitor() ), i prozori sa kojima ce dijeliti resurse )
     if (window == NULL) //Ako prozor nije napravljen
     {
