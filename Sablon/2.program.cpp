@@ -18,12 +18,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-// The Width of the screen
-unsigned int SCREEN_WIDTH;
-// The height of the screen
-unsigned int SCREEN_HEIGHT;
-
-Game Egipt(SCREEN_WIDTH, SCREEN_HEIGHT);
+Game Egipt;
 
 int main(int argc, char* argv[])
 {
@@ -42,9 +37,8 @@ int main(int argc, char* argv[])
     //Stvaranje prozora
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    SCREEN_WIDTH = mode->width;
-    SCREEN_HEIGHT = mode->height;
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Egipt 2D", monitor, NULL); // Napravi novi prozor
+    Egipt = Game(mode->width, mode->height);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Egipt 2D", monitor, NULL); // Napravi novi prozor
     // glfwCreateWindow( sirina, visina, naslov, monitor na koji ovaj prozor ide preko citavog ekrana (u tom slucaju umjesto NULL ide glfwGetPrimaryMonitor() ), i prozori sa kojima ce dijeliti resurse )
     if (window == NULL) //Ako prozor nije napravljen
     {
@@ -67,7 +61,7 @@ int main(int argc, char* argv[])
 
     // OpenGL configuration
     // --------------------
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glViewport(0, 0, mode->width, mode->height);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

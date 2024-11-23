@@ -31,6 +31,7 @@ public:
     unsigned int            Width, Height;
     // constructor/destructor
     Game(unsigned int width, unsigned int height);
+    Game();
     ~Game();
     // initialize game state (load all shaders/textures/levels)
     void Init();
