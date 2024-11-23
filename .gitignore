@@ -11,6 +11,8 @@
 # Roslyn cache directories
 *.ide/
 
+Sablon/.vs/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
