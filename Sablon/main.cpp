@@ -25,7 +25,7 @@ int main(void)
     // Nju koristimo za stvaranje okvira prozora / konteksta
     if (!glfwInit()) // !0 == 1  | glfwInit inicijalizuje GLFW i vrati 1 ako je inicijalizovana uspjesno, a 0 ako nije
     {
-        std::cout<<"GLFW Biblioteka se nije ucitala! :(\n";
+        std::cout << "GLFW Biblioteka se nije ucitala! :(\n";
         return 1;
     }
 
@@ -88,7 +88,7 @@ int main(void)
     //glBufferData(koji bafer, koliko podataka ima, adresa podataka, nacin upotrebe podataka (GL_STATIC_DRAW, GL_DYNAMIC_DRAW, GL_STREAM_DRAW;)
 
     //Opisivanje pokazivaca na atribute: Pokazivac 0 ceo opisati poziciju (koordinate x i y), a pokazivac 1 boju (komponente r, g, b i a).
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, (void*)0); 
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, (void*)0);
     //glVertexAttribPointer(indeks pokazivaca, broj komponenti atributa, tip komponenti atributa, da li je potrebno normalizovati podatke (nama uvijek GL_FALSE), korak/velicina tjemena, pomjeraj sa pocetka jednog tjemena do komponente za ovaj atribut - mora biti (void*))  
     glEnableVertexAttribArray(0); //Aktiviraj taj pokazivac i tako intepretiraj podatke
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (void*)(2 * sizeof(float))); //Objasni da su preostala cetiri broja boja (preskacemo preko XY od pozicije, pa je pomjeraj 2 * sizeof(float))
@@ -98,11 +98,10 @@ int main(void)
     //To radimo tako sto bindujemo 0, pa kada treba da nacrtamo nase stvari, samo ih ponovo bindujemo
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    
+
 
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++ RENDER LOOP - PETLJA ZA CRTANJE +++++++++++++++++++++++++++++++++++++++++++++++++
     glfwSetKeyCallback(window, key_callback);
-    glClearColor(0.15, 0.15, 0.15, 1.0); //Podesavanje boje pozadine (RGBA format);
 
     while (!glfwWindowShouldClose(window)) //Beskonacna petlja iz koje izlazimo tek kada prozor treba da se zatvori
     {
@@ -117,9 +116,13 @@ int main(void)
         glBindVertexArray(0);
         glUseProgram(0);
 
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+
+
+
         //Zamjena vidljivog bafera sa pozadinskim
         glfwSwapBuffers(window);
-
         //Hvatanje dogadjaja koji se ticu okvira prozora (promjena velicine, pomjeranje itd)
         glfwPollEvents();
     }
@@ -153,11 +156,11 @@ unsigned int compile_shader(GLenum type, const char* source)
         ss << "";
         std::cout << "Greska pri citanju fajla sa putanje \"" << source << "\"!" << std::endl;
     }
-     std::string temp = ss.str();
-     const char* sourceCode = temp.c_str(); //Izvorni kod sejdera koji citamo iz fajla na putanji "source"
+    std::string temp = ss.str();
+    const char* sourceCode = temp.c_str(); //Izvorni kod sejdera koji citamo iz fajla na putanji "source"
 
     int shader = glCreateShader(type); //Napravimo prazan sejder odredjenog tipa (vertex ili fragment)
-    
+
     int success; //Da li je kompajliranje bilo uspjesno (1 - da)
     glShaderSource(shader, 1, &sourceCode, NULL); //Postavi izvorni kod sejdera
     glCompileShader(shader); //Kompajliraj sejder
@@ -165,8 +168,8 @@ unsigned int compile_shader(GLenum type, const char* source)
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success); //Provjeri da li je sejder uspjesno kompajliran
     if (success == GL_FALSE)
     {
-	    char info_log[512];
-	    glGetShaderInfoLog(shader, 512, NULL, info_log); //Pribavi poruku o gresci
+        char info_log[512];
+        glGetShaderInfoLog(shader, 512, NULL, info_log); //Pribavi poruku o gresci
         if (type == GL_VERTEX_SHADER)
             printf("VERTEX");
         else if (type == GL_FRAGMENT_SHADER)
@@ -196,8 +199,8 @@ unsigned int create_shader(const char* vsSource, const char* fsSource)
     glGetProgramiv(program, GL_VALIDATE_STATUS, &success); //Slicno kao za sejdere
     if (success == GL_FALSE)
     {
-	    char info_log[512];
-	    glGetShaderInfoLog(program, 512, NULL, info_log);
+        char info_log[512];
+        glGetShaderInfoLog(program, 512, NULL, info_log);
         std::cout << "Objedinjeni sejder ima gresku! Greska: \n";
         std::cout << info_log << std::endl;
     }
