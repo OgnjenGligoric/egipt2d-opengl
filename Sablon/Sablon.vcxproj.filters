@@ -24,9 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -42,7 +39,7 @@
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="2.program.cpp">
+    <ClCompile Include="program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sprite_renderer.cpp">

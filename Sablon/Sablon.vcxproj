@@ -141,9 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2.program.cpp" />
+    <ClCompile Include="program.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="resource_manager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="sprite_renderer.cpp" />
