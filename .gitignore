@@ -227,3 +227,12 @@ $RECYCLE.BIN/
 *.vsidx
 *.db
 *.opendb
+/Sablon/.vs/Sablon/config/applicationhost.config
+/Sablon/.vs/Sablon/FileContentIndex/0c922583-e7a4-40d7-8522-4951dfbfb4c4.vsidx
+/Sablon/.vs/Sablon/FileContentIndex/read.lock
+/Sablon/.vs/Sablon/v17/Browse.VC.db
+/Sablon/.vs/Sablon/v17/Browse.VC.db-shm
+/Sablon/.vs/Sablon/v17/Browse.VC.db-wal
+/Sablon/.vs/Sablon/v17/Browse.VC.opendb
+/Sablon/.vs/Sablon/v17/TestStore/0/000.testlog
+/Sablon/.vs/Sablon/v17/TestStore/0/testlog.manifest
