@@ -43,6 +43,8 @@ void Game::Init()
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     // load textures
     ResourceManager::LoadTexture("res/texel_checker.png", false, "face");
+    ResourceManager::LoadTexture("res/sun.png", true, "sun");
+
 }
 
 void Game::Update(float dt)
@@ -57,5 +59,5 @@ void Game::ProcessInput(float dt)
 
 void Game::Render()
 {
-    Renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(200.0f, 200.0f), glm::vec2(300.0f, 400.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    Renderer->DrawSprite(ResourceManager::GetTexture("sun"), glm::vec2(200.0f, 200.0f), glm::vec2(Width/10, Width/10), 0.0f);
 }

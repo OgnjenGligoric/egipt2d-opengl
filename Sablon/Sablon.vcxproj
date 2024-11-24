@@ -169,6 +169,7 @@
   <ItemGroup>
     <Image Include="res\balrog.png" />
     <Image Include="res\flames.png" />
+    <Image Include="res\sun.png" />
     <Image Include="res\texel_checker.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
