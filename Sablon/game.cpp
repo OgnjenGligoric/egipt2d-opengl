@@ -9,8 +9,10 @@
 #include "game.h"
 #include "resource_manager.h"
 #include "sprite_renderer.h"
+#include "game_object.h"
 
-SpriteRenderer *Renderer;
+SpriteRenderer* Renderer;
+GameObject* Player;
 
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -20,7 +22,8 @@ Game::Game(unsigned int width, unsigned int height)
 
 Game::~Game()
 {
-
+    delete Renderer;
+    delete Player;
 }
 
 void Game::Init()
@@ -35,7 +38,7 @@ void Game::Init()
     // set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     // load textures
-    ResourceManager::LoadTexture("res/texel_checker.png", true, "face");
+    ResourceManager::LoadTexture("res/texel_checker.png", false, "face");
 }
 
 void Game::Update(float dt)

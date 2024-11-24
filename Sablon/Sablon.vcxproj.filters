@@ -45,6 +45,9 @@
     <ClCompile Include="sprite_renderer.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="game_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="sprite_renderer.h">
       <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="game_object.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

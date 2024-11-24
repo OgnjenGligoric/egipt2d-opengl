@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game_object.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="resource_manager.cpp" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="game_object.h" />
     <ClInclude Include="resource_manager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="sprite_renderer.h" />
