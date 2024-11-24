@@ -168,8 +168,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\balrog.png" />
+    <Image Include="res\desert.png" />
     <Image Include="res\flames.png" />
     <Image Include="res\moon.png" />
+    <Image Include="res\sky.jpg" />
     <Image Include="res\sun.png" />
     <Image Include="res\texel_checker.png" />
   </ItemGroup>

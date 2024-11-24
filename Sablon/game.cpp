@@ -15,6 +15,8 @@ SpriteRenderer* Renderer;
 GameObject* Player;
 GameObject* Sun;
 GameObject* Moon;
+GameObject* Desert;
+GameObject* Sky;
 
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -32,6 +34,8 @@ Game::~Game()
     delete Player;
     delete Sun;
     delete Moon;
+    delete Desert;
+    delete Sky;
 }
 
 void Game::Init()
@@ -49,8 +53,13 @@ void Game::Init()
     ResourceManager::LoadTexture("res/texel_checker.png", false, "face");
     ResourceManager::LoadTexture("res/sun.png", true, "sun");
     ResourceManager::LoadTexture("res/moon.png", true, "moon");
+    ResourceManager::LoadTexture("res/desert.png", true, "desert");
+    ResourceManager::LoadTexture("res/sky.png", true, "sky");
+
     Sun = new GameObject(glm::vec2(this->Width-200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("sun"));
     Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("moon"));
+    Desert = new GameObject(glm::vec2(0.0f, Height/2.0f), glm::vec2(Width, Height/2.0f), ResourceManager::GetTexture("desert"));
+    Sky = new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), ResourceManager::GetTexture("sky"));
 
 }
 
@@ -66,7 +75,8 @@ void Game::ProcessInput(float dt)
 
 void Game::Render()
 {
-    Renderer->DrawSprite(ResourceManager::GetTexture("sun"), glm::vec2(200.0f, 200.0f), glm::vec2(Width/10, Width/10), 0.0f);
+    Sky->Draw(*Renderer);
     Sun->Draw(*Renderer);
     Moon->Draw(*Renderer);
+    Desert->Draw(*Renderer);
 }
