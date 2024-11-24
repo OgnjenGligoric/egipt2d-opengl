@@ -20,6 +20,10 @@ Game::Game(unsigned int width, unsigned int height)
     
 }
 
+Game::Game()
+{
+}
+
 Game::~Game()
 {
     delete Renderer;
