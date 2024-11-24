@@ -169,6 +169,7 @@
   <ItemGroup>
     <Image Include="res\balrog.png" />
     <Image Include="res\flames.png" />
+    <Image Include="res\moon.png" />
     <Image Include="res\sun.png" />
     <Image Include="res\texel_checker.png" />
   </ItemGroup>
