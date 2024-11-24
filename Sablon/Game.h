@@ -39,8 +39,12 @@ public:
     void ProcessInput(float dt);
     void Update(float dt);
     void Render();
-    void UpdateSunAndMoon(float dt);
-    void UpdateSkyBrightness(float dt);
+private:
+    float _sunAngle = 180.0f;
+    void _updateSunAndMoon(float dt);
+    void _updateSkyBrightness(float dt);
+    float _getSunRiseHeightPoint();
+    float _getSunRotationRadius();
 };
 
 #endif

@@ -65,13 +65,15 @@ void Game::Init()
 
 void Game::Update(float dt)
 {
-    UpdateSunAndMoon(dt);
-    UpdateSkyBrightness(dt);
+    _updateSunAndMoon(dt);
+    _updateSkyBrightness(dt);
 }
 
 void Game::ProcessInput(float dt)
 {
-    
+    if (Keys[GLFW_KEY_R]) {
+
+    }
 }
 
 void Game::Render()
@@ -82,30 +84,28 @@ void Game::Render()
     Desert->Draw(*Renderer);
 }
 
-void Game::UpdateSunAndMoon(float dt)
+void Game::_updateSunAndMoon(float dt)
 {
-    glm::vec2 circleCenter = glm::vec2(this->Width / 2.0f, this->Height / 1.5f); 
-    float circleRadius = Width / 3.0f;
+    glm::vec2 circleCenter = glm::vec2(this->Width / 2.0f, _getSunRiseHeightPoint()); 
 
-    static float sunAngle = 180.0f; 
-    sunAngle += 50.0f * dt;       
+    _sunAngle += 50.0f * dt;       
 
-    if (sunAngle > 360.0f)
-        sunAngle -= 360.0f;
+    if (_sunAngle > 360.0f)
+        _sunAngle -= 360.0f;
 
-    float sunRadians = glm::radians(sunAngle);
+    float sunRadians = glm::radians(_sunAngle);
     float moonRadians = sunRadians + glm::pi<float>(); 
 
-    Sun->Position.x = circleCenter.x + circleRadius * cos(sunRadians);
-    Sun->Position.y = circleCenter.y + circleRadius * sin(sunRadians);
+    Sun->Position.x = circleCenter.x + _getSunRotationRadius() * cos(sunRadians);
+    Sun->Position.y = circleCenter.y + _getSunRotationRadius() * sin(sunRadians);
 
-    Moon->Position.x = circleCenter.x + circleRadius * cos(moonRadians);
-    Moon->Position.y = circleCenter.y + circleRadius * sin(moonRadians);
+    Moon->Position.x = circleCenter.x + _getSunRotationRadius() * cos(moonRadians);
+    Moon->Position.y = circleCenter.y + _getSunRotationRadius() * sin(moonRadians);
 }
 
-void Game::UpdateSkyBrightness(float dt)
+void Game::_updateSkyBrightness(float dt)
 {
-    float normalizedHeight = (this->Height / 1.5f - Sun->Position.y) / (this->Height / 3.0f);
+    float normalizedHeight = (_getSunRiseHeightPoint() - Sun->Position.y) / _getSunRotationRadius();
     normalizedHeight = glm::clamp(normalizedHeight, 0.0f, 1.0f);
 
     glm::vec3 darkestColor = glm::vec3(0.0f, 0.0f, 0.2f); // Midnight blue
@@ -114,4 +114,12 @@ void Game::UpdateSkyBrightness(float dt)
     glm::vec3 currentColor = glm::mix(darkestColor, brightestColor, normalizedHeight);
 
     Sky->Color = currentColor; 
+}
+
+float Game::_getSunRiseHeightPoint() {
+    return this->Height / 1.5f;
+}
+
+float Game::_getSunRotationRadius() {
+    return this->Width / 3.0f;
 }
