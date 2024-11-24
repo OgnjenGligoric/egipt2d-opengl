@@ -65,12 +65,13 @@ void Game::Init()
 
 void Game::Update(float dt)
 {
-
+    UpdateSunAndMoon(dt);
+    UpdateSkyBrightness(dt);
 }
 
 void Game::ProcessInput(float dt)
 {
-
+    
 }
 
 void Game::Render()
@@ -79,4 +80,38 @@ void Game::Render()
     Sun->Draw(*Renderer);
     Moon->Draw(*Renderer);
     Desert->Draw(*Renderer);
+}
+
+void Game::UpdateSunAndMoon(float dt)
+{
+    glm::vec2 circleCenter = glm::vec2(this->Width / 2.0f, this->Height / 1.5f); 
+    float circleRadius = Width / 3.0f;
+
+    static float sunAngle = 180.0f; 
+    sunAngle += 50.0f * dt;       
+
+    if (sunAngle > 360.0f)
+        sunAngle -= 360.0f;
+
+    float sunRadians = glm::radians(sunAngle);
+    float moonRadians = sunRadians + glm::pi<float>(); 
+
+    Sun->Position.x = circleCenter.x + circleRadius * cos(sunRadians);
+    Sun->Position.y = circleCenter.y + circleRadius * sin(sunRadians);
+
+    Moon->Position.x = circleCenter.x + circleRadius * cos(moonRadians);
+    Moon->Position.y = circleCenter.y + circleRadius * sin(moonRadians);
+}
+
+void Game::UpdateSkyBrightness(float dt)
+{
+    float normalizedHeight = (this->Height / 1.5f - Sun->Position.y) / (this->Height / 3.0f);
+    normalizedHeight = glm::clamp(normalizedHeight, 0.0f, 1.0f);
+
+    glm::vec3 darkestColor = glm::vec3(0.0f, 0.0f, 0.2f); // Midnight blue
+    glm::vec3 brightestColor = glm::vec3(0.5f, 0.7f, 1.0f); // Sky blue
+
+    glm::vec3 currentColor = glm::mix(darkestColor, brightestColor, normalizedHeight);
+
+    Sky->Color = currentColor; 
 }

@@ -39,6 +39,8 @@ public:
     void ProcessInput(float dt);
     void Update(float dt);
     void Render();
+    void UpdateSunAndMoon(float dt);
+    void UpdateSkyBrightness(float dt);
 };
 
 #endif
