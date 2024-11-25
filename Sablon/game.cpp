@@ -24,6 +24,8 @@ GameObject* Desert;
 GameObject* Sky;
 GameObject* Star;
 vector<GameObject*> Stars;
+GameObject* Water;
+GameObject* Fish;
 
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -43,6 +45,8 @@ Game::~Game()
     delete Moon;
     delete Desert;
     delete Sky;
+    delete Water;
+    delete Fish;
 
     for (const auto& star : Stars) {
         delete star;
@@ -67,19 +71,24 @@ void Game::Init()
     ResourceManager::LoadTexture("res/desert.png", true, "desert");
     ResourceManager::LoadTexture("res/sky.png", true, "sky");
     ResourceManager::LoadTexture("res/star.png", true, "star");
+    ResourceManager::LoadTexture("res/water_shaped.png", true, "water");
+    ResourceManager::LoadTexture("res/fish.png", true, "fish");
 
     Sun = new GameObject(glm::vec2(this->Width-200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("sun"));
     Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("moon"));
     Desert = new GameObject(glm::vec2(0.0f, Height/2.0f), glm::vec2(Width, Height/2.0f), ResourceManager::GetTexture("desert"));
     Sky = new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), ResourceManager::GetTexture("sky"));
-
+    Water = new GameObject(glm::vec2(Width / 1.5f, Height / 1.2f), glm::vec2(Width/3, Width/10), ResourceManager::GetTexture("water"), glm::vec3(1.0f), glm::vec2(0.0f, 0.0f), 0.7f);
     _initializeStars();
+    Fish = new GameObject(glm::vec2(Width / 1.45f, Height / 1.1f), glm::vec2(Width / 30, Width/30), ResourceManager::GetTexture("fish"));
+
 }
 
 void Game::Update(float dt)
 {
     _updateSunAndMoon(dt);
     _updateSkyBrightness(dt);
+    _moveFish(dt);
 }
 
 void Game::ProcessInput(float dt)
@@ -96,6 +105,10 @@ void Game::ProcessInput(float dt)
     {
         _initializeStars();
     }
+    if (Keys[GLFW_KEY_F])
+    {
+        Fish->FlipHorizontally();
+    }
 }
 
 void Game::Render()
@@ -109,6 +122,8 @@ void Game::Render()
     Sun->Draw(*Renderer);
     Moon->Draw(*Renderer);
     Desert->Draw(*Renderer);
+    Fish->Draw(*Renderer);
+    Water->Draw(*Renderer);
 }
 
 void Game::_updateSunAndMoon(float dt)
@@ -163,6 +178,31 @@ void Game::_initializeStars()
         Stars[i]->Position = glm::vec2(x, y);
         Stars[i]->Size = glm::vec2(size, size);
         Stars[i]->Alpha = 1.0f; 
+    }
+}
+
+void Game::_moveFish(float dt)
+{
+    const float fishSpeed = 100.0f ; // You can adjust this value to make the fish move faster or slower
+    const float padding = Water->Size.x / 10.0f;
+
+    float waterLeft = Water->Position.x + padding;
+    float waterRight = Water->Position.x + Water->Size.x - padding;
+
+    if (Fish->Position.x + Fish->Size.x > waterRight) {
+        Fish->FlipHorizontally();
+        Fish->Position.x = waterRight - Fish->Size.x; // Prevent fish from going past the right border
+    }
+    else if (Fish->Position.x <= waterLeft) {
+        Fish->FlipHorizontally();
+        Fish->Position.x = waterLeft; // Prevent fish from going past the left border
+    }
+
+    if (!Fish->IsFlippedHorizontally) {
+        Fish->Position.x -= fishSpeed * dt; // Moving left
+    }
+    else {
+        Fish->Position.x += fishSpeed * dt; // Moving right
     }
 }
 

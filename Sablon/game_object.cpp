@@ -17,5 +17,10 @@ GameObject::GameObject(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec
 
 void GameObject::Draw(SpriteRenderer& renderer)
 {
-    renderer.DrawSprite(this->Sprite, this->Position, this->Size, this->Rotation, this->Color, this->Alpha);
+    renderer.DrawSprite(this->Sprite, this->Position, this->Size, this->Rotation, this->Color, this->Alpha, this->IsFlippedHorizontally);
+}
+
+void GameObject::FlipHorizontally()
+{
+    IsFlippedHorizontally = !IsFlippedHorizontally;
 }

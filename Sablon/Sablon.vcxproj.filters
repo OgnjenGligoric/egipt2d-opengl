@@ -112,5 +112,8 @@
     <Image Include="res\star.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\fish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

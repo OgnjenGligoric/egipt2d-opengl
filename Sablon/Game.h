@@ -44,9 +44,10 @@ private:
     float _timeSpeed = 50.0f;
     void _updateSunAndMoon(float dt);
     void _updateSkyBrightness(float dt);
-    float _getSunRiseHeightPoint();
-    float _getSunRotationRadius();
+    float _getSunRiseHeightPoint() const;
+    float _getSunRotationRadius() const;
     void _initializeStars();
+    void _moveFish(float dt);
 };
 
 #endif
