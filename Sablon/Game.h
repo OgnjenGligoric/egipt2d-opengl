@@ -46,6 +46,7 @@ private:
     void _updateSkyBrightness(float dt);
     float _getSunRiseHeightPoint();
     float _getSunRotationRadius();
+    void _initializeStars();
 };
 
 #endif

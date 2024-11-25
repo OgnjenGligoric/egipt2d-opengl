@@ -73,14 +73,7 @@ void Game::Init()
     Desert = new GameObject(glm::vec2(0.0f, Height/2.0f), glm::vec2(Width, Height/2.0f), ResourceManager::GetTexture("desert"));
     Sky = new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), ResourceManager::GetTexture("sky"));
 
-    srand(static_cast<unsigned>(std::time(nullptr)));
-    constexpr int starCount = 50; 
-    for (int i = 0; i < starCount; ++i) {
-	    const auto x = static_cast<float>(rand() % Width);
-	    const auto y = static_cast<float>(rand() % static_cast<int>(_getSunRiseHeightPoint())); // Only in the upper part of the sky
-	    const auto size = static_cast<float>(10 + std::rand() % 21);
-    	Stars.push_back(new GameObject(glm::vec2(x, y), glm::vec2(size, size), ResourceManager::GetTexture("star")));
-    }
+    _initializeStars();
 }
 
 void Game::Update(float dt)
@@ -98,6 +91,10 @@ void Game::ProcessInput(float dt)
     if (Keys[GLFW_KEY_P])
     {
         _timeSpeed = 0.0f;
+    }
+    if (Keys[GLFW_KEY_S])
+    {
+        _initializeStars();
     }
 }
 
@@ -150,10 +147,31 @@ void Game::_updateSkyBrightness(float dt)
     }
 }
 
-float Game::_getSunRiseHeightPoint() {
+void Game::_initializeStars()
+{
+    srand(static_cast<unsigned>(std::time(nullptr)));
+    constexpr int starCount = 50;
+
+    while (Stars.size() < starCount) {
+        Stars.push_back(new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 0.0f), ResourceManager::GetTexture("star")));
+    }
+
+    for (int i = 0; i < starCount; ++i) {
+        const auto x = static_cast<float>(rand() % Width);
+        const auto y = static_cast<float>(rand() % static_cast<int>(_getSunRiseHeightPoint()));
+        const auto size = static_cast<float>(10 + std::rand() % 21);
+        Stars[i]->Position = glm::vec2(x, y);
+        Stars[i]->Size = glm::vec2(size, size);
+        Stars[i]->Alpha = 1.0f; 
+    }
+}
+
+float Game::_getSunRiseHeightPoint() const
+{
     return this->Height / 1.5f;
 }
 
-float Game::_getSunRotationRadius() {
+float Game::_getSunRotationRadius() const
+{
     return this->Width / 3.0f;
 }
