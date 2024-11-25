@@ -183,7 +183,7 @@ void Game::_initializeStars()
 
 void Game::_moveFish(float dt)
 {
-    const float fishSpeed = 100.0f ; // You can adjust this value to make the fish move faster or slower
+    const float fishSpeed = 100.0f ; 
     const float padding = Water->Size.x / 10.0f;
 
     float waterLeft = Water->Position.x + padding;
@@ -191,18 +191,18 @@ void Game::_moveFish(float dt)
 
     if (Fish->Position.x + Fish->Size.x > waterRight) {
         Fish->FlipHorizontally();
-        Fish->Position.x = waterRight - Fish->Size.x; // Prevent fish from going past the right border
+        Fish->Position.x = waterRight - Fish->Size.x; 
     }
     else if (Fish->Position.x <= waterLeft) {
         Fish->FlipHorizontally();
-        Fish->Position.x = waterLeft; // Prevent fish from going past the left border
+        Fish->Position.x = waterLeft; 
     }
 
     if (!Fish->IsFlippedHorizontally) {
-        Fish->Position.x -= fishSpeed * dt; // Moving left
+        Fish->Position.x -= fishSpeed * dt; 
     }
     else {
-        Fish->Position.x += fishSpeed * dt; // Moving right
+        Fish->Position.x += fishSpeed * dt;
     }
 }
 
