@@ -172,6 +172,7 @@
     <Image Include="res\flames.png" />
     <Image Include="res\moon.png" />
     <Image Include="res\sky.jpg" />
+    <Image Include="res\star.png" />
     <Image Include="res\sun.png" />
     <Image Include="res\texel_checker.png" />
   </ItemGroup>

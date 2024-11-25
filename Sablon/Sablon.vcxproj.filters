@@ -97,5 +97,20 @@
     <Image Include="res\texel_checker.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\desert.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\moon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\sky.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\sun.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\star.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
