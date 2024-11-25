@@ -72,7 +72,12 @@ void Game::Update(float dt)
 void Game::ProcessInput(float dt)
 {
     if (Keys[GLFW_KEY_R]) {
-
+        _sunAngle = 180.0f;
+        _timeSpeed = 50.0f;
+    }
+    if (Keys[GLFW_KEY_P])
+    {
+        _timeSpeed = 0.0f;
     }
 }
 
@@ -88,7 +93,7 @@ void Game::_updateSunAndMoon(float dt)
 {
     glm::vec2 circleCenter = glm::vec2(this->Width / 2.0f, _getSunRiseHeightPoint()); 
 
-    _sunAngle += 50.0f * dt;       
+    _sunAngle += _timeSpeed * dt;       
 
     if (_sunAngle > 360.0f)
         _sunAngle -= 360.0f;

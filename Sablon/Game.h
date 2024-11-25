@@ -41,6 +41,7 @@ public:
     void Render();
 private:
     float _sunAngle = 180.0f;
+    float _timeSpeed = 50.0f;
     void _updateSunAndMoon(float dt);
     void _updateSkyBrightness(float dt);
     float _getSunRiseHeightPoint();
