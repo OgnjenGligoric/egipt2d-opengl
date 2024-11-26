@@ -85,7 +85,6 @@ int main(int argc, char* argv[])
 
         // manage user input
         // -----------------
-        Egipt.ProcessInput(deltaTime);
 
         // update game state
         // -----------------
@@ -113,6 +112,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     // when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (key == GLFW_KEY_F && action == GLFW_RELEASE)
+        Egipt.ProcessInput(key);
+    if (key == GLFW_KEY_S && action == GLFW_RELEASE)
+        Egipt.ProcessInput(key);
+    if (key == GLFW_KEY_P && action == GLFW_RELEASE)
+        Egipt.ProcessInput(key);
+    if (key == GLFW_KEY_R && action == GLFW_RELEASE)
+        Egipt.ProcessInput(key);
+
     if (key >= 0 && key < 1024)
     {
         if (action == GLFW_PRESS)

@@ -171,7 +171,9 @@
     <Image Include="res\desert.png" />
     <Image Include="res\fish.png" />
     <Image Include="res\flames.png" />
+    <Image Include="res\grass.png" />
     <Image Include="res\moon.png" />
+    <Image Include="res\pyramid.png" />
     <Image Include="res\sky.jpg" />
     <Image Include="res\star.png" />
     <Image Include="res\sun.png" />

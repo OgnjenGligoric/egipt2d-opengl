@@ -24,6 +24,7 @@ GameObject* Desert;
 GameObject* Sky;
 GameObject* Star;
 vector<GameObject*> Stars;
+vector<GameObject*> Grass;
 GameObject* Water;
 GameObject* Fish;
 
@@ -51,6 +52,9 @@ Game::~Game()
     for (const auto& star : Stars) {
         delete star;
     }
+    for (const auto& grass : Grass) {
+        delete grass;
+    }
 }
 
 void Game::Init()
@@ -73,6 +77,8 @@ void Game::Init()
     ResourceManager::LoadTexture("res/star.png", true, "star");
     ResourceManager::LoadTexture("res/water_shaped.png", true, "water");
     ResourceManager::LoadTexture("res/fish.png", true, "fish");
+    ResourceManager::LoadTexture("res/grass.png", true, "grass");
+    ResourceManager::LoadTexture("res/pyramid.png", true, "pyramid");
 
     Sun = new GameObject(glm::vec2(this->Width-200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("sun"));
     Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("moon"));
@@ -91,21 +97,21 @@ void Game::Update(float dt)
     _moveFish(dt);
 }
 
-void Game::ProcessInput(float dt)
+void Game::ProcessInput(int key)
 {
-    if (Keys[GLFW_KEY_R]) {
+    if (key == GLFW_KEY_R) {
         _sunAngle = 180.0f;
         _timeSpeed = 50.0f;
     }
-    if (Keys[GLFW_KEY_P])
+    if (key == GLFW_KEY_P)
     {
         _timeSpeed = 0.0f;
     }
-    if (Keys[GLFW_KEY_S])
+    if (key == GLFW_KEY_S)
     {
         _initializeStars();
     }
-    if (Keys[GLFW_KEY_F])
+    if (key == GLFW_KEY_F)
     {
         Fish->FlipHorizontally();
     }
@@ -156,7 +162,7 @@ void Game::_updateSkyBrightness(float dt)
     const glm::vec3 currentColor = glm::mix(darkestColor, brightestColor, normalizedHeight);
 
     Sky->Color = currentColor;
-    const float starVisibility = 1.0f - normalizedHeight; // Stars are visible as the sky darkens
+    const float starVisibility = 1.0f - normalizedHeight; 
     for (const auto& star : Stars) {
         star->Alpha = starVisibility;
     }

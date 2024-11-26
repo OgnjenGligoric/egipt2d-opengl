@@ -36,7 +36,7 @@ public:
     // initialize game state (load all shaders/textures/levels)
     void Init();
     // game loop
-    void ProcessInput(float dt);
+    void ProcessInput(int key);
     void Update(float dt);
     void Render();
 private:
