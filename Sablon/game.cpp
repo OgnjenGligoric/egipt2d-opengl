@@ -172,7 +172,7 @@ void Game::_updateSkyBrightness(float dt) const
     float normalizedHeight = (_getSunRiseHeightPoint() - Sun->Position.y) / _getSunRotationRadius();
     normalizedHeight = glm::clamp(normalizedHeight, 0.0f, 1.0f);
 
-    const glm::vec3 darkestColor = glm::vec3(0.0f, 0.0f, 0.2f); // Midnight blue
+    const glm::vec3 darkestColor = glm::vec3(0.0f, 0.0f, 0.3f); // Midnight blue
     const glm::vec3 brightestColor = glm::vec3(0.5f, 0.7f, 1.0f); // Sky blue
 
     const glm::vec3 currentColor = glm::mix(darkestColor, brightestColor, normalizedHeight);
@@ -215,7 +215,7 @@ void Game::_initializePyramids() const
     for (int i = 0; i < pyramidCount; ++i) {
         const auto size = static_cast<float>(Width) / 10 + rand() % 100;
         const auto x = static_cast<float>(rand() % Width/2);
-        const auto y = _getSunRiseHeightPoint() - size + rand() % static_cast<int>(Height - _getSunRiseHeightPoint());
+        const auto y = _getSunRiseHeightPoint() - size + rand() % static_cast<int>(Height - _getSunRiseHeightPoint() - size);
         Pyramids[i]->Position = glm::vec2(x, y);
         Pyramids[i]->Size = glm::vec2(size, size);
         Pyramids[i]->Alpha = 1.0f;
