@@ -17,3 +17,18 @@
 
 ![alt text](image-4.png)
 ![alt text](image-5.png)
+
+### 1.3 Interchangable grass
+
+* Grass visibility can be toggled on keys '1' and '2'
+* New grass preset can be genereted on key 'G'
+
+![alt text](image-6.png)
+![alt text](image-7.png)
+
+### 1.4 Pyramids generation
+
+* On key '3' generate new pyramid preset.
+
+![alt text](image-8.png)
+![alt text](image-9.png)

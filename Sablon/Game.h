@@ -50,6 +50,7 @@ private:
     void _initializePyramids() const;
     void _initializeGrass() const;
     void _moveFish(float dt);
+    void _toggleGrassVisibility();
 };
 
 #endif

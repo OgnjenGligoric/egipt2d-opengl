@@ -132,6 +132,10 @@ void Game::ProcessInput(int key)
     {
         _initializeGrass();
     }
+    if (key == GLFW_KEY_1 || key == GLFW_KEY_2)
+    {
+        _toggleGrassVisibility();
+    }
 }
 
 void Game::Render()
@@ -284,6 +288,14 @@ void Game::_moveFish(float dt)
     }
     else {
         Fish->Position.x += fishSpeed * dt;
+    }
+}
+
+void Game::_toggleGrassVisibility()
+{
+    for (const auto& grass : Grass)
+    {
+        grass->Alpha = static_cast<float>((static_cast<int>(grass->Alpha)+1) % 2);
     }
 }
 
