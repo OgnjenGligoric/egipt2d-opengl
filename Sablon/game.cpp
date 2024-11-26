@@ -94,6 +94,7 @@ void Game::Init()
     Water = new GameObject(glm::vec2(Width / 1.5f, Height / 1.2f), glm::vec2(Width/3, Width/10), ResourceManager::GetTexture("water"), glm::vec3(1.0f), glm::vec2(0.0f, 0.0f), 0.7f);
     _initializeStars();
     _initializePyramids();
+    _initializeGrass();
     Fish = new GameObject(glm::vec2(Width / 1.45f, Height / 1.1f), glm::vec2(Width / 30, Width/30), ResourceManager::GetTexture("fish"));
 
 }
@@ -127,26 +128,36 @@ void Game::ProcessInput(int key)
     {
         _initializePyramids();
     }
+    if (key == GLFW_KEY_G)
+    {
+        _initializeGrass();
+    }
 }
 
 void Game::Render()
 {
     Sky->Draw(*Renderer);
 
-    for (const auto& star : Stars) {
+    for (const auto& star : Stars)
+    {
         star->Draw(*Renderer);
     }
-    
 
     Sun->Draw(*Renderer);
     Moon->Draw(*Renderer);
     Desert->Draw(*Renderer);
-    for (const auto& pyramid : Pyramids) {
+    for (const auto& pyramid : Pyramids)
+    {
         pyramid->Draw(*Renderer);
     }
     Fish->Draw(*Renderer);
     Water->Draw(*Renderer);
+    for (const auto& grass: Grass)
+    {
+        grass->Draw(*Renderer);
+    }
 }
+
 
 void Game::_updateSunAndMoon(float dt)
 {
@@ -184,7 +195,7 @@ void Game::_updateSkyBrightness(float dt) const
     }
 }
 
-void Game::_initializeStars()
+void Game::_initializeStars() const
 {
     srand(static_cast<unsigned>(std::time(nullptr)));
     constexpr int starCount = 50;
@@ -227,8 +238,28 @@ void Game::_initializePyramids() const
     });
 }
 
-void Game::_initializeGrass()
+void Game::_initializeGrass() const
 {
+    srand(static_cast<unsigned>(std::time(nullptr)));
+    constexpr int grassCount = 30;
+
+    while (Grass.size() < grassCount) {
+        Grass.push_back(new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 0.0f), ResourceManager::GetTexture("grass")));
+    }
+
+    for (int i = 0; i < grassCount; ++i) {
+        const auto size = static_cast<float>(Width) / 15 + rand() % 200;
+        const auto x = Water->Position.x - size/2 + rand() % static_cast<int>(Water->Size.x);
+        const auto y = Water->Position.y + Water->Size.y - size +  (rand() % static_cast<int>(Width/30) - Width/60);
+        Grass[i]->Position = glm::vec2(x, y);
+        Grass[i]->Size = glm::vec2(size, size);
+        Grass[i]->Alpha = 1.0f;
+    }
+
+    std::sort(Grass.begin(), Grass.end(), [](const GameObject* a, const GameObject* b)
+        {
+            return a->Position.y + a->Size.y < b->Position.y + b->Size.y;
+        });
 }
 
 void Game::_moveFish(float dt)

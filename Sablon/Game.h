@@ -46,9 +46,9 @@ private:
     void _updateSkyBrightness(float dt) const;
     float _getSunRiseHeightPoint() const;
     float _getSunRotationRadius() const;
-    void _initializeStars();
+    void _initializeStars() const;
     void _initializePyramids() const;
-    void _initializeGrass();
+    void _initializeGrass() const;
     void _moveFish(float dt);
 };
 
