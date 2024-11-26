@@ -7,6 +7,9 @@
 ** option) any later version.
 ******************************************************************/
 #include "game.h"
+
+#include <algorithm>
+
 #include "resource_manager.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
@@ -25,6 +28,7 @@ GameObject* Sky;
 GameObject* Star;
 vector<GameObject*> Stars;
 vector<GameObject*> Grass;
+vector<GameObject*> Pyramids;
 GameObject* Water;
 GameObject* Fish;
 
@@ -55,6 +59,9 @@ Game::~Game()
     for (const auto& grass : Grass) {
         delete grass;
     }
+    for (const auto& pyramid: Pyramids) {
+        delete pyramid;
+    }
 }
 
 void Game::Init()
@@ -82,10 +89,11 @@ void Game::Init()
 
     Sun = new GameObject(glm::vec2(this->Width-200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("sun"));
     Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("moon"));
-    Desert = new GameObject(glm::vec2(0.0f, Height/2.0f), glm::vec2(Width, Height/2.0f), ResourceManager::GetTexture("desert"));
+    Desert = new GameObject(glm::vec2(0.0f, Height/2), glm::vec2(Width, Height/2), ResourceManager::GetTexture("desert"));
     Sky = new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), ResourceManager::GetTexture("sky"));
     Water = new GameObject(glm::vec2(Width / 1.5f, Height / 1.2f), glm::vec2(Width/3, Width/10), ResourceManager::GetTexture("water"), glm::vec3(1.0f), glm::vec2(0.0f, 0.0f), 0.7f);
     _initializeStars();
+    _initializePyramids();
     Fish = new GameObject(glm::vec2(Width / 1.45f, Height / 1.1f), glm::vec2(Width / 30, Width/30), ResourceManager::GetTexture("fish"));
 
 }
@@ -115,26 +123,34 @@ void Game::ProcessInput(int key)
     {
         Fish->FlipHorizontally();
     }
+    if (key == GLFW_KEY_3)
+    {
+        _initializePyramids();
+    }
 }
 
 void Game::Render()
 {
     Sky->Draw(*Renderer);
 
-    for (auto& star : Stars) {
+    for (const auto& star : Stars) {
         star->Draw(*Renderer);
     }
+    
 
     Sun->Draw(*Renderer);
     Moon->Draw(*Renderer);
     Desert->Draw(*Renderer);
+    for (const auto& pyramid : Pyramids) {
+        pyramid->Draw(*Renderer);
+    }
     Fish->Draw(*Renderer);
     Water->Draw(*Renderer);
 }
 
 void Game::_updateSunAndMoon(float dt)
 {
-    glm::vec2 circleCenter = glm::vec2(this->Width / 2.0f, _getSunRiseHeightPoint()); 
+	const auto circleCenter = glm::vec2(this->Width / 2.0f, _getSunRiseHeightPoint()); 
 
     _sunAngle += _timeSpeed * dt;       
 
@@ -151,7 +167,7 @@ void Game::_updateSunAndMoon(float dt)
     Moon->Position.y = circleCenter.y + _getSunRotationRadius() * sin(moonRadians);
 }
 
-void Game::_updateSkyBrightness(float dt)
+void Game::_updateSkyBrightness(float dt) const
 {
     float normalizedHeight = (_getSunRiseHeightPoint() - Sun->Position.y) / _getSunRotationRadius();
     normalizedHeight = glm::clamp(normalizedHeight, 0.0f, 1.0f);
@@ -180,11 +196,39 @@ void Game::_initializeStars()
     for (int i = 0; i < starCount; ++i) {
         const auto x = static_cast<float>(rand() % Width);
         const auto y = static_cast<float>(rand() % static_cast<int>(_getSunRiseHeightPoint()));
-        const auto size = static_cast<float>(10 + std::rand() % 21);
+        const auto size = static_cast<float>(10 + rand() % 21);
         Stars[i]->Position = glm::vec2(x, y);
         Stars[i]->Size = glm::vec2(size, size);
         Stars[i]->Alpha = 1.0f; 
     }
+}
+
+void Game::_initializePyramids() const
+{
+    srand(static_cast<unsigned>(std::time(nullptr)));
+    constexpr int pyramidCount = 3;
+
+    while (Pyramids.size() < pyramidCount) {
+        Pyramids.push_back(new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 0.0f), ResourceManager::GetTexture("pyramid")));
+    }
+
+    for (int i = 0; i < pyramidCount; ++i) {
+        const auto size = static_cast<float>(Width) / 10 + rand() % 100;
+        const auto x = static_cast<float>(rand() % Width/2);
+        const auto y = _getSunRiseHeightPoint() - size + rand() % static_cast<int>(Height - _getSunRiseHeightPoint());
+        Pyramids[i]->Position = glm::vec2(x, y);
+        Pyramids[i]->Size = glm::vec2(size, size);
+        Pyramids[i]->Alpha = 1.0f;
+    }
+
+    std::sort(Pyramids.begin(), Pyramids.end(), [](const GameObject* a, const GameObject* b)
+    {
+        return a->Position.y + a->Size.y < b->Position.y + b->Size.y;
+    });
+}
+
+void Game::_initializeGrass()
+{
 }
 
 void Game::_moveFish(float dt)

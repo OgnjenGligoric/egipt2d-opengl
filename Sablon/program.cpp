@@ -109,24 +109,29 @@ int main(int argc, char* argv[])
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-    // when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    // Close the window on Escape key press
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
-    if (key == GLFW_KEY_F && action == GLFW_RELEASE)
-        Egipt.ProcessInput(key);
-    if (key == GLFW_KEY_S && action == GLFW_RELEASE)
-        Egipt.ProcessInput(key);
-    if (key == GLFW_KEY_P && action == GLFW_RELEASE)
-        Egipt.ProcessInput(key);
-    if (key == GLFW_KEY_R && action == GLFW_RELEASE)
-        Egipt.ProcessInput(key);
+        return;
+    }
 
-    if (key >= 0 && key < 1024)
-    {
-        if (action == GLFW_PRESS)
-            Egipt.Keys[key] = true;
-        else if (action == GLFW_RELEASE)
-            Egipt.Keys[key] = false;
+    // Process specific keys on key release
+    if (action == GLFW_RELEASE) {
+        switch (key) {
+        case GLFW_KEY_F:
+        case GLFW_KEY_S:
+        case GLFW_KEY_P:
+        case GLFW_KEY_R:
+        case GLFW_KEY_3:
+            Egipt.ProcessInput(key);
+            break;
+		default: ;
+        }
+    }
+
+    // Update key state for valid keys
+    if (key >= 0 && key < 1024) {
+        Egipt.Keys[key] = (action == GLFW_PRESS);
     }
 }
 
