@@ -83,9 +83,7 @@ int main(int argc, char* argv[])
         lastFrame = currentFrame;
         glfwPollEvents();
 
-        // manage user input
-        // -----------------
-
+        Egipt.ProcessInput(0);
         // update game state
         // -----------------
         Egipt.Update(deltaTime);
@@ -126,9 +124,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         case GLFW_KEY_2:
         case GLFW_KEY_3:
         case GLFW_KEY_G:
+        case GLFW_KEY_A:
+        case GLFW_KEY_D:
             Egipt.ProcessInput(key);
             break;
 		default: ;
+        }
+    }
+
+    if (action == GLFW_PRESS)
+    {
+        switch (key) {
+        case GLFW_KEY_A:
+        case GLFW_KEY_D:
+            Egipt.ProcessInput(key);
+            break;
+        default:;
         }
     }
 

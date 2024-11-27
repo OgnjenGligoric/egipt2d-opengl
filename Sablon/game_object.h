@@ -29,13 +29,15 @@ public:
     float       Rotation;
     bool        IsSolid;
     bool        Destroyed;
-    float       Alpha;
+    float       Alpha{};
+    float       Threshold{};
+    glm::vec3   HighlightColor{};
     bool        IsFlippedHorizontally = false;
     // render state
     Texture2D   Sprite;
     // constructor(s)
     GameObject();
-    GameObject(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color = glm::vec3(1.0f), glm::vec2 velocity = glm::vec2(0.0f, 0.0f), float alpha = 1.0f);
+    GameObject(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color = glm::vec3(1.0f), glm::vec2 velocity = glm::vec2(0.0f, 0.0f), float alpha = 1.0f, float threshold = 0.0f, glm::vec3 highlightColor = glm::vec3(1.0f, 0.0f, 0.0f));
     // draw sprite
     virtual void Draw(SpriteRenderer& renderer);
     void FlipHorizontally();

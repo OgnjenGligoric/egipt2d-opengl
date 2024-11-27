@@ -136,6 +136,31 @@ void Game::ProcessInput(int key)
     {
         _toggleGrassVisibility();
     }
+
+    if (Keys[GLFW_KEY_D])
+    {
+        auto largestPyramid = *max_element(Pyramids.begin(), Pyramids.end(), [](const GameObject* a, const GameObject* b) {
+            return (a->Size.x * a->Size.y) < (b->Size.x * b->Size.y); // Compare by area (width * height)
+            });
+
+        largestPyramid->Threshold += 0.01f;
+        if (largestPyramid->Threshold > 1.0f) {
+            largestPyramid->Threshold = 1.0f;
+        }
+    }
+    if (Keys[GLFW_KEY_A])
+    {
+        auto largestPyramid = *max_element(Pyramids.begin(), Pyramids.end(), [](const GameObject* a, const GameObject* b) {
+            return (a->Size.x * a->Size.y) < (b->Size.x * b->Size.y); // Compare by area (width * height)
+            });
+
+        largestPyramid->Threshold -= 0.01f;
+        if (largestPyramid->Threshold < 0.0f){
+            largestPyramid->Threshold = 0.0f;
+        }
+    }
+
+
 }
 
 void Game::Render()

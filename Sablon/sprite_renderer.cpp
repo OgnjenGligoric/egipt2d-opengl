@@ -20,7 +20,7 @@ SpriteRenderer::~SpriteRenderer()
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color, float alpha, bool isFlippedHorizontally)
+void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color, float alpha, bool isFlippedHorizontally, float threshold, glm::vec3 highlightColor)
 {
     // prepare transformations
     this->shader.Use();
@@ -44,6 +44,10 @@ void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec
     this->shader.SetVector3f("spriteColor", color);
 
     this->shader.SetFloat("alpha", alpha);
+
+    this->shader.SetFloat("threshold", threshold);
+    this->shader.SetVector3f("highlightColor", highlightColor);
+
 
     glActiveTexture(GL_TEXTURE0);
     texture.Bind();
