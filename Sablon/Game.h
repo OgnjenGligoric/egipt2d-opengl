@@ -9,8 +9,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+#include "game_object.h"
 
 // Represents the current state of the game
 enum GameState {
@@ -46,6 +49,7 @@ private:
     void _updateSkyBrightness(float dt) const;
     float _getSunRiseHeightPoint() const;
     float _getSunRotationRadius() const;
+    GameObject* GetLargestPyramid() const;
     void _initializeStars() const;
     void _initializePyramids() const;
     void _initializeGrass() const;
