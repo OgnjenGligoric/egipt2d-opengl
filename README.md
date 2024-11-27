@@ -38,3 +38,9 @@
 * Made interesting outcomes
 
 ![alt text](image-10.png)
+
+### 1.6 Coloring pyramid 
+
+* With keys `A` and `D`
+
+![alt text](image-11.png)
