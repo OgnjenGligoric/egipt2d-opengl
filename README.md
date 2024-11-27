@@ -32,3 +32,9 @@
 
 ![alt text](image-8.png)
 ![alt text](image-9.png)
+
+### 1.5 Playing around with fragment shaders 
+
+* Made interesting outcomes
+
+![alt text](image-10.png)
