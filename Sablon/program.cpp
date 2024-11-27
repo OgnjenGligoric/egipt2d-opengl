@@ -13,10 +13,13 @@
 #include "resource_manager.h"
 
 #include <iostream>
+#include <thread>
 
 // GLFW function declarations
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+constexpr float targetFPS = 60.0f;
+constexpr float targetFrameTime = 1.0f / targetFPS;
 
 Game Egipt;
 
@@ -76,6 +79,7 @@ int main(int argc, char* argv[])
 
     while (!glfwWindowShouldClose(window))
     {
+
         // calculate delta time
         // --------------------
         float currentFrame = glfwGetTime();
@@ -95,6 +99,13 @@ int main(int argc, char* argv[])
         Egipt.Render();
 
         glfwSwapBuffers(window);
+
+        float frameTime = glfwGetTime() - currentFrame;
+        if (frameTime < targetFrameTime)
+        {
+            // Sleep for the remaining time to achieve 60 FPS
+            std::this_thread::sleep_for(std::chrono::duration<float>(targetFrameTime - frameTime));
+        }
     }
 
     // delete all resources as loaded using the resource manager
