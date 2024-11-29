@@ -211,7 +211,7 @@ bool Game::Render()
 
     if (_isDisplayedToBeContinued)
     {
-	    Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 2, 2.0f);
+	    Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 4, 3.0f);
     }
     if (_shouldClose)
     {
