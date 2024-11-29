@@ -44,3 +44,9 @@
 * With keys `A` and `D`
 
 ![alt text](image-11.png)
+
+### 1.7 Door appearing and opening
+
+* With key 'O' you make doors appear and start to open.
+
+![![alt text](image-13.png)](image-12.png)

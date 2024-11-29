@@ -109,6 +109,10 @@ void Game::Update(float dt)
     _updateSunAndMoon(dt);
     _updateSkyBrightness(dt);
     _moveFish(dt);
+    if(_startOpeningDoors)
+    {
+        _openDoors(dt);
+    }
 }
 
 void Game::ProcessInput(int key)
@@ -135,7 +139,7 @@ void Game::ProcessInput(int key)
     }
     if (key == GLFW_KEY_O)
     {
-        _initializeDoors();
+        _toggleDoorVisibility();
     }
 	if (key == GLFW_KEY_G)
     {
@@ -176,9 +180,10 @@ void Game::Render()
     Sun->Draw(*Renderer);
     Moon->Draw(*Renderer);
     Desert->Draw(*Renderer);
-    for (const auto& pyramid : Pyramids)
+    for (size_t i = 0; i < Pyramids.size(); ++i)
     {
-        pyramid->Draw(*Renderer);
+        Pyramids[i]->Draw(*Renderer);
+        Doors[i]->Draw(*Renderer);
     }
     Fish->Draw(*Renderer);
     Water->Draw(*Renderer);
@@ -186,7 +191,9 @@ void Game::Render()
     {
         grass->Draw(*Renderer);
     }
+    
 }
+
 
 
 void Game::_updateSunAndMoon(float dt)
@@ -244,7 +251,7 @@ void Game::_initializeStars() const
     }
 }
 
-void Game::_initializePyramids() const
+void Game::_initializePyramids()
 {
     srand(static_cast<unsigned>(std::time(nullptr)));
     constexpr int pyramidCount = 3;
@@ -267,6 +274,8 @@ void Game::_initializePyramids() const
     {
         return a->Position.y + a->Size.y < b->Position.y + b->Size.y;
     });
+
+    _initializeDoors();
 }
 
 void Game::_initializeGrass() const
@@ -343,6 +352,42 @@ auto Game::GetLargestPyramid() const -> GameObject*
         });
 }
 
-void Game::_initializeDoors()
+void Game::_initializeDoors() const
 {
+    Doors.clear(); 
+    Doors.shrink_to_fit();
+    for (const auto& pyramid : Pyramids)
+    {
+        Doors.push_back(new GameObject(glm::vec2(pyramid->Position.x+pyramid->Size.x/4, pyramid->Position.y+pyramid->Size.y-pyramid->Size.x/4), glm::vec2(pyramid->Size.x/4,pyramid->Size.x/4), ResourceManager::GetTexture("door")));
+    }
+    for (const auto& door : Doors)
+    {
+        door->Alpha = 0.0f;
+        door->Rotation = 270.0f;
+        door->HighlightColor = glm::vec3(0.0f, 0.0f, 0.0f);
+    }
+}
+
+void Game::_toggleDoorVisibility()
+{
+    for (const auto& door : Doors)
+    {
+        door->Alpha = static_cast<int>(door->Alpha + 1.0f) % 2;
+        if (door->Alpha == 1.0f)
+        {
+            _startOpeningDoors = true;
+            door->Threshold = 0.0f;
+        }
+    }
+}
+
+auto Game::_openDoors(float dt) -> void
+{
+    for (const auto& door : Doors)
+    {
+        door->Threshold += 0.01f;
+        if (door->Threshold > 1.0f) {
+            door->Threshold = 1.0f; // Cap the threshold at 1.0
+        }
+    }
 }

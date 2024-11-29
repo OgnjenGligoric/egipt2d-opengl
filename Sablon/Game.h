@@ -38,12 +38,15 @@ public:
     ~Game();
     // initialize game state (load all shaders/textures/levels)
     void Init();
-    void _initializeDoors();
     // game loop
     void ProcessInput(int key);
     void Update(float dt);
     void Render();
 private:
+    bool _startOpeningDoors;
+    void _openDoors(float dt);
+    void _initializeDoors() const;
+    void _toggleDoorVisibility();
     float _sunAngle = 180.0f;
     float _timeSpeed = 50.0f;
     void _updateSunAndMoon(float dt);
@@ -52,7 +55,7 @@ private:
     float _getSunRotationRadius() const;
     GameObject* GetLargestPyramid() const;
     void _initializeStars() const;
-    void _initializePyramids() const;
+    void _initializePyramids();
     void _initializeGrass() const;
     void _moveFish(float dt);
     void _toggleGrassVisibility();
