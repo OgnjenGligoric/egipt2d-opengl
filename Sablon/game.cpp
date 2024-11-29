@@ -1,15 +1,5 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
 #include "game.h"
-
 #include <algorithm>
-
 #include "resource_manager.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
@@ -348,7 +338,7 @@ float Game::_getSunRotationRadius() const
 auto Game::GetLargestPyramid() const -> GameObject*
 {
     return *max_element(Pyramids.begin(), Pyramids.end(), [](const GameObject* a, const GameObject* b) {
-        return (a->Size.x * a->Size.y) < (b->Size.x * b->Size.y); // Compare by area (width * height)
+        return (a->Size.x * a->Size.y) < (b->Size.x * b->Size.y); 
         });
 }
 
@@ -387,7 +377,7 @@ auto Game::_openDoors(float dt) -> void
     {
         door->Threshold += 0.01f;
         if (door->Threshold > 1.0f) {
-            door->Threshold = 1.0f; // Cap the threshold at 1.0
+            door->Threshold = 1.0f; 
         }
     }
 }
