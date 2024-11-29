@@ -26,8 +26,9 @@ public:
     void ProcessInput(int key);
     void ProcessMouseClick(double x, double y);
     void Update(float dt);
-    void Render();
+    bool Render();
 private:
+    bool _shouldClose = false;
     bool _startOpeningDoors;
     bool _isDisplayedToBeContinued = false;
     void _openDoors(float dt);

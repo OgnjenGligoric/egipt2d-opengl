@@ -14,6 +14,8 @@ constexpr float targetFrameTime = 1.0f / targetFPS;
 
 Game Egipt;
 
+void mouse_callback(GLFWwindow* window, int button, int action, int mods);
+
 int main(int argc, char* argv[])
 {
     if (!glfwInit()) // !0 == 1  | glfwInit inicijalizuje GLFW i vrati 1 ako je inicijalizovana uspjesno, a 0 ako nije
@@ -32,7 +34,7 @@ int main(int argc, char* argv[])
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(monitor);
     Egipt = Game(mode->width, mode->height);
-    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Egipt 2D", monitor, NULL); // Napravi novi prozor
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Egipt 2D", NULL, NULL); // Napravi novi prozor
     // glfwCreateWindow( sirina, visina, naslov, monitor na koji ovaj prozor ide preko citavog ekrana (u tom slucaju umjesto NULL ide glfwGetPrimaryMonitor() ), i prozori sa kojima ce dijeliti resurse )
     if (window == NULL) //Ako prozor nije napravljen
     {
@@ -51,6 +53,8 @@ int main(int argc, char* argv[])
     }
 
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
+
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // OpenGL configuration
@@ -87,7 +91,7 @@ int main(int argc, char* argv[])
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        Egipt.Render();
+        const bool should_close = Egipt.Render();
 
         glfwSwapBuffers(window);
 
@@ -96,6 +100,11 @@ int main(int argc, char* argv[])
         {
             // Sleep for the remaining time to achieve 60 FPS
             std::this_thread::sleep_for(std::chrono::duration<float>(targetFrameTime - frameTime));
+        }
+        if (should_close)
+        {
+	        std::this_thread::sleep_for(std::chrono::duration<float>(2.0f));
+            glfwSetWindowShouldClose(window, true);
         }
     }
 
@@ -114,6 +123,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, true);
         return;
     }
+
 
     // Process specific keys on key release
     if (action == GLFW_RELEASE) {
@@ -144,15 +154,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
     }
 
-    if (action == GLFW_PRESS && key == GLFW_MOUSE_BUTTON_LEFT)
+    if (key >= 0 && key < 1024) {
+        Egipt.Keys[key] = (action == GLFW_PRESS);
+    }
+}
+
+void mouse_callback(GLFWwindow* window, int button, int action, int mods)
+{
+
+    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
     {
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         Egipt.ProcessMouseClick(xpos, ypos);
-    }
-
-    if (key >= 0 && key < 1024) {
-        Egipt.Keys[key] = (action == GLFW_PRESS);
     }
 }
 

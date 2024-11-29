@@ -1,11 +1,16 @@
 #include "game.h"
 #include <algorithm>
+#include <chrono>
+
 #include "resource_manager.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
 #include <vector>
 #include <cstdlib> 
 #include <ctime>
+#include <iostream>
+#include <thread>
+
 #include "text_renderer.h"
 
 using namespace std;
@@ -172,12 +177,14 @@ void Game::ProcessMouseClick(double x, double y)
     {
 	    if(door->Alpha == 1.0f && door->Position.x <= x && door->Position.x + door->Size.x >= x && door->Position.y <= y && door->Position.y + door->Size.y >= y)
 	    {
-            _isDisplayedToBeContinued = true;
-        }
+		    _isDisplayedToBeContinued = true;
+            _shouldClose = true;
+            break;
+	    }
     }
 }
 
-void Game::Render()
+bool Game::Render()
 {
     Sky->Draw(*Renderer);
 
@@ -204,8 +211,13 @@ void Game::Render()
 
     if (_isDisplayedToBeContinued)
     {
-        Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 2, 2.0f);
+	    Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 2, 2.0f);
     }
+    if (_shouldClose)
+    {
+        return true;
+    }
+    return false;
 }
 
 
