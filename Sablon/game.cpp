@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib> 
 #include <ctime>
+#include "text_renderer.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ vector<GameObject*> Pyramids;
 vector<GameObject*> Doors;
 GameObject* Water;
 GameObject* Fish;
+TextRenderer* Text;
 
 Game::Game(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -60,38 +62,44 @@ Game::~Game()
 
 void Game::Init()
 {
-    // load shaders
-    ResourceManager::LoadShader("sprite.vert", "sprite.frag", nullptr, "sprite");
-    // configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width),
-        static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
-    ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-    ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
-    // set render-specific controls
-    Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-    // load textures
-    ResourceManager::LoadTexture("res/texel_checker.png", false, "face");
-    ResourceManager::LoadTexture("res/sun.png", true, "sun");
-    ResourceManager::LoadTexture("res/moon.png", true, "moon");
-    ResourceManager::LoadTexture("res/desert.png", true, "desert");
-    ResourceManager::LoadTexture("res/sky.png", true, "sky");
-    ResourceManager::LoadTexture("res/star.png", true, "star");
-    ResourceManager::LoadTexture("res/water_shaped.png", true, "water");
-    ResourceManager::LoadTexture("res/fish.png", true, "fish");
-    ResourceManager::LoadTexture("res/grass.png", true, "grass");
-    ResourceManager::LoadTexture("res/pyramid.png", true, "pyramid");
-    ResourceManager::LoadTexture("res/door.jpg", true, "door");
+	// load shaders
+	ResourceManager::LoadShader("sprite.vert", "sprite.frag", nullptr, "sprite");
+	// configure shaders
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width),
+	                                  static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
+	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
+	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+	// set render-specific controls
+	Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	// load textures
+	ResourceManager::LoadTexture("res/texel_checker.png", false, "face");
+	ResourceManager::LoadTexture("res/sun.png", true, "sun");
+	ResourceManager::LoadTexture("res/moon.png", true, "moon");
+	ResourceManager::LoadTexture("res/desert.png", true, "desert");
+	ResourceManager::LoadTexture("res/sky.png", true, "sky");
+	ResourceManager::LoadTexture("res/star.png", true, "star");
+	ResourceManager::LoadTexture("res/water_shaped.png", true, "water");
+	ResourceManager::LoadTexture("res/fish.png", true, "fish");
+	ResourceManager::LoadTexture("res/grass.png", true, "grass");
+	ResourceManager::LoadTexture("res/pyramid.png", true, "pyramid");
+	ResourceManager::LoadTexture("res/door.jpg", true, "door");
 
-    Sun = new GameObject(glm::vec2(this->Width-200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("sun"));
-    Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("moon"));
-    Desert = new GameObject(glm::vec2(0.0f, Height/2), glm::vec2(Width, Height/2), ResourceManager::GetTexture("desert"));
-    Sky = new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), ResourceManager::GetTexture("sky"));
-    Water = new GameObject(glm::vec2(Width / 1.5f, Height / 1.2f), glm::vec2(Width/3, Width/10), ResourceManager::GetTexture("water"), glm::vec3(1.0f), glm::vec2(0.0f, 0.0f), 0.7f);
-    _initializeStars();
-    _initializePyramids();
-    _initializeGrass();
-    Fish = new GameObject(glm::vec2(Width / 1.45f, Height / 1.1f), glm::vec2(Width / 30, Width/30), ResourceManager::GetTexture("fish"));
-
+	Sun = new GameObject(glm::vec2(this->Width - 200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f),
+	                     ResourceManager::GetTexture("sun"));
+	Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f),
+	                      ResourceManager::GetTexture("moon"));
+	Desert = new GameObject(glm::vec2(0.0f, Height / 2), glm::vec2(Width, Height / 2),
+	                        ResourceManager::GetTexture("desert"));
+	Sky = new GameObject(glm::vec2(0.0f, 0.0f), glm::vec2(Width, Height), ResourceManager::GetTexture("sky"));
+	Water = new GameObject(glm::vec2(Width / 1.5f, Height / 1.2f), glm::vec2(Width / 3, Width / 10),
+	                       ResourceManager::GetTexture("water"), glm::vec3(1.0f), glm::vec2(0.0f, 0.0f), 0.7f);
+	_initializeStars();
+	_initializePyramids();
+	_initializeGrass();
+	Fish = new GameObject(glm::vec2(Width / 1.45f, Height / 1.1f), glm::vec2(Width / 30, Width / 30),
+	                      ResourceManager::GetTexture("fish"));
+    Text = new TextRenderer(Width, Height);
+    Text->Load("fonts/Antonio-Regular.ttf", 24);
 }
 
 void Game::Update(float dt)
@@ -181,7 +189,7 @@ void Game::Render()
     {
         grass->Draw(*Renderer);
     }
-    
+    Text->RenderText("Ognjen Gligoric SV79/2021", Width/30, Height/30, 1.0f);
 }
 
 

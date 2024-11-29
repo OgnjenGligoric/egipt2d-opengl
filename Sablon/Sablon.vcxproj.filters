@@ -48,6 +48,9 @@
     <ClCompile Include="game_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="text_renderer.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -61,6 +64,12 @@
       <Filter>Source Files\Shader Files</Filter>
     </None>
     <None Include="sprite.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="text.frag">
+      <Filter>Source Files\Shader Files</Filter>
+    </None>
+    <None Include="text.vert">
       <Filter>Source Files\Shader Files</Filter>
     </None>
   </ItemGroup>
@@ -85,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="game_object.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="text_renderer.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
