@@ -26,7 +26,7 @@ public:
     Shader TextShader;
     TextRenderer(unsigned int width, unsigned int height);
     void Load(std::string font, unsigned int fontSize);
-    void RenderText(std::string text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f));
+    void RenderText(std::string text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f), float alpha = 1.0f);
 private:
     unsigned int VAO, VBO;
 };

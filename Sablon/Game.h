@@ -24,10 +24,12 @@ public:
     ~Game();
     void Init();
     void ProcessInput(int key);
+    void ProcessMouseClick(double x, double y);
     void Update(float dt);
     void Render();
 private:
     bool _startOpeningDoors;
+    bool _isDisplayedToBeContinued = false;
     void _openDoors(float dt);
     void _initializeDoors() const;
     void _toggleDoorVisibility();

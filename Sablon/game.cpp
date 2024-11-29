@@ -166,6 +166,17 @@ void Game::ProcessInput(int key)
     }
 }
 
+void Game::ProcessMouseClick(double x, double y)
+{
+    for (const auto& door : Doors)
+    {
+	    if(door->Alpha == 1.0f && door->Position.x <= x && door->Position.x + door->Size.x >= x && door->Position.y <= y && door->Position.y + door->Size.y >= y)
+	    {
+            _isDisplayedToBeContinued = true;
+        }
+    }
+}
+
 void Game::Render()
 {
     Sky->Draw(*Renderer);
@@ -190,8 +201,12 @@ void Game::Render()
         grass->Draw(*Renderer);
     }
     Text->RenderText("Ognjen Gligoric SV79/2021", Width/30, Height/30, 1.0f);
-}
 
+    if (_isDisplayedToBeContinued)
+    {
+        Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 2, 2.0f);
+    }
+}
 
 
 void Game::_updateSunAndMoon(float dt)

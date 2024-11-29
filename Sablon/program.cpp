@@ -144,6 +144,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
     }
 
+    if (action == GLFW_PRESS && key == GLFW_MOUSE_BUTTON_LEFT)
+    {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        Egipt.ProcessMouseClick(xpos, ypos);
+    }
+
     if (key >= 0 && key < 1024) {
         Egipt.Keys[key] = (action == GLFW_PRESS);
     }
