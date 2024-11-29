@@ -50,3 +50,7 @@
 * With key 'O' you make doors appear and start to open.
 
 ![![alt text](image-13.png)](image-12.png)
+
+### 1.8 Displayed text using FreeType
+
+![alt text](image-14.png)
