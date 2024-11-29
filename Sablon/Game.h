@@ -38,6 +38,7 @@ public:
     ~Game();
     // initialize game state (load all shaders/textures/levels)
     void Init();
+    void _initializeDoors();
     // game loop
     void ProcessInput(int key);
     void Update(float dt);

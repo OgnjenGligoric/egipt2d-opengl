@@ -29,6 +29,7 @@ GameObject* Star;
 vector<GameObject*> Stars;
 vector<GameObject*> Grass;
 vector<GameObject*> Pyramids;
+vector<GameObject*> Doors;
 GameObject* Water;
 GameObject* Fish;
 
@@ -62,6 +63,9 @@ Game::~Game()
     for (const auto& pyramid: Pyramids) {
         delete pyramid;
     }
+    for (const auto& door: Doors) {
+        delete door;
+    }
 }
 
 void Game::Init()
@@ -86,6 +90,7 @@ void Game::Init()
     ResourceManager::LoadTexture("res/fish.png", true, "fish");
     ResourceManager::LoadTexture("res/grass.png", true, "grass");
     ResourceManager::LoadTexture("res/pyramid.png", true, "pyramid");
+    ResourceManager::LoadTexture("res/door.jpg", true, "door");
 
     Sun = new GameObject(glm::vec2(this->Width-200.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("sun"));
     Moon = new GameObject(glm::vec2(0.0f, this->Height / 2.0f - 100.0f), glm::vec2(200.0f, 200.0f), ResourceManager::GetTexture("moon"));
@@ -128,13 +133,17 @@ void Game::ProcessInput(int key)
     {
         _initializePyramids();
     }
-    if (key == GLFW_KEY_G)
+    if (key == GLFW_KEY_O)
+    {
+        _initializeDoors();
+    }
+	if (key == GLFW_KEY_G)
     {
         _initializeGrass();
     }
     if (key == GLFW_KEY_1 || key == GLFW_KEY_2)
     {
-        _toggleGrassVisibility();
+	    _toggleGrassVisibility();
     }
 
     if (Keys[GLFW_KEY_D])
@@ -149,12 +158,10 @@ void Game::ProcessInput(int key)
     {
         GameObject* largestPyramid = GetLargestPyramid();
         largestPyramid->Threshold -= 0.01f;
-        if (largestPyramid->Threshold > 1.0f) {
-            largestPyramid->Threshold = 1.0f;
+        if (largestPyramid->Threshold < 0.0f) {
+            largestPyramid->Threshold = 0.0f;
         }
     }
-
-
 }
 
 void Game::Render()
@@ -253,6 +260,7 @@ void Game::_initializePyramids() const
         Pyramids[i]->Position = glm::vec2(x, y);
         Pyramids[i]->Size = glm::vec2(size, size);
         Pyramids[i]->Alpha = 1.0f;
+        Pyramids[i]->Threshold = 0.0f;
     }
 
     std::sort(Pyramids.begin(), Pyramids.end(), [](const GameObject* a, const GameObject* b)
@@ -333,4 +341,8 @@ auto Game::GetLargestPyramid() const -> GameObject*
     return *max_element(Pyramids.begin(), Pyramids.end(), [](const GameObject* a, const GameObject* b) {
         return (a->Size.x * a->Size.y) < (b->Size.x * b->Size.y); // Compare by area (width * height)
         });
+}
+
+void Game::_initializeDoors()
+{
 }

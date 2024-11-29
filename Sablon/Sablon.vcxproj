@@ -169,6 +169,7 @@
   <ItemGroup>
     <Image Include="res\balrog.png" />
     <Image Include="res\desert.png" />
+    <Image Include="res\door.jpg" />
     <Image Include="res\fish.png" />
     <Image Include="res\flames.png" />
     <Image Include="res\grass.png" />
