@@ -215,6 +215,7 @@ bool Game::Render()
     }
     if (_shouldClose)
     {
+        _shouldClose = false;
         return true;
     }
     return false;

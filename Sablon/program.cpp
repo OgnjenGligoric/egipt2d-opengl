@@ -71,6 +71,7 @@ int main(int argc, char* argv[])
     // -------------------
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+    float start_closing = 0.0f;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -92,6 +93,11 @@ int main(int argc, char* argv[])
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         const bool should_close = Egipt.Render();
+        if (should_close)
+        {
+            start_closing = currentFrame;
+        }
+
 
         glfwSwapBuffers(window);
 
@@ -101,9 +107,8 @@ int main(int argc, char* argv[])
             // Sleep for the remaining time to achieve 60 FPS
             std::this_thread::sleep_for(std::chrono::duration<float>(targetFrameTime - frameTime));
         }
-        if (should_close)
+        if (currentFrame - start_closing > 2.0f && start_closing != 0.0f)
         {
-	        std::this_thread::sleep_for(std::chrono::duration<float>(2.0f));
             glfwSetWindowShouldClose(window, true);
         }
     }
