@@ -178,7 +178,6 @@ void Game::ProcessMouseClick(double x, double y)
 	    if(door->Alpha == 1.0f && door->Position.x <= x && door->Position.x + door->Size.x >= x && door->Position.y <= y && door->Position.y + door->Size.y >= y)
 	    {
 		    _isDisplayedToBeContinued = true;
-            _shouldClose = true;
             break;
 	    }
     }
@@ -211,7 +210,14 @@ bool Game::Render()
 
     if (_isDisplayedToBeContinued)
     {
-	    Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 4, 3.0f);
+	    Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 4, 3.0f,glm::vec3(1),1.0f, _toBeContinuedThreshold);
+        _toBeContinuedThreshold += 0.01;
+        
+        if (_toBeContinuedThreshold >= 0.99f && _toBeContinuedThreshold <= 2.0f)
+        {
+            _shouldClose = true;
+            _toBeContinuedThreshold = 2.1f;
+        }
     }
     if (_shouldClose)
     {

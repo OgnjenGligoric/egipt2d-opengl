@@ -76,18 +76,34 @@ void TextRenderer::Load(std::string font, unsigned int fontSize)
     FT_Done_FreeType(ft);
 }
 
-void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec3 color, float alpha)
+void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec3 color, float alpha, float threshold)
 {
     this->TextShader.Use();
     this->TextShader.SetVector3f("textColor", color);
-    this->TextShader.SetFloat("alpha", alpha);
+
+    int total_chars = text.size();
+    int threshold_index = static_cast<int>(threshold * total_chars);
+
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(this->VAO);
 
-    std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++)
+    for (int i = 0; i < total_chars; i++)
     {
-        Character ch = Characters[*c];
+        char c = text[i];
+        Character ch = Characters[c];
+
+        // Calculate alpha for each character
+        float char_alpha = 0.0f; // Default to invisible
+        if (i == threshold_index - 1) // Letter just before the threshold
+        {
+            char_alpha = 0.3f;
+        }
+        else if (i >= threshold_index) // Letters after the threshold
+        {
+            char_alpha = alpha; // Use the input alpha value for full visibility
+        }
+
+        this->TextShader.SetFloat("alpha", char_alpha);
 
         float xpos = x + ch.Bearing.x * scale;
         float ypos = y + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale;
@@ -105,11 +121,13 @@ void TextRenderer::RenderText(std::string text, float x, float y, float scale, g
         };
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        x += (ch.Advance >> 6) * scale; 
+
+        x += (ch.Advance >> 6) * scale;
     }
+
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
