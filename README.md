@@ -54,3 +54,9 @@
 ### 1.8 Displayed text using FreeType
 
 ![alt text](image-14.png)
+
+### 1.9 Text disappearing from left to right 
+
+* On click on pyramid doors "To be continued in 3D" appears and disappears from left to right
+
+![alt text](image-15.png)

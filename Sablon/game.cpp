@@ -210,7 +210,7 @@ bool Game::Render()
 
     if (_isDisplayedToBeContinued)
     {
-	    Text->RenderText("Nastavice se u 3D projektu", Width / 2, Height / 4, 3.0f,glm::vec3(1),1.0f, _toBeContinuedThreshold);
+	    Text->RenderText("To be continued in 3D game", Width / 2, Height / 4, 3.0f,glm::vec3(1),1.0f, _toBeContinuedThreshold);
         _toBeContinuedThreshold += 0.01;
         
         if (_toBeContinuedThreshold >= 0.99f && _toBeContinuedThreshold <= 2.0f)
